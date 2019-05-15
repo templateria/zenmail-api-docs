@@ -1,0 +1,5117 @@
+openapi: "3.0.0"
+servers:
+  - url: https://api.zenmail.marketing/v1
+info:
+  title: "Zenmail API"
+  description: Documentação completa da API de email marketing do Zenmail, criado pela Templateria. Para testar as chamadas à API, clique em `Authorize` e informe seu token de acesso.
+  version: "1.0.0"
+externalDocs:
+  description: "Mais informações sobre o Zenmail"
+  url: "https://help.zenmail.marketing"
+tags:
+  - name: oauth
+    description: Autenticação
+  - name: accounts
+    description: Contas
+  - name: users
+    description: Usuários
+  - name: custom fields
+    description: Campos Personalizados
+  - name: contacts
+    description: Contatos
+  - name: contact notes
+    description: Observações sobre Contatos
+  - name: lists
+    description: Listas de Contato
+  - name: campaigns
+    description: Campanhas
+  - name: reports
+    description: Relatórios
+  - name: events
+    description: Eventos (aberturas, cliques, descadastros, reportes por spam, erros de entrega)
+  - name: templates
+    description: Templates
+  - name: billing
+    description: Cobrança
+  - name: authorized senders
+    description: Remetentes Autorizados
+  - name: subaccounts
+    description: Subcontas/Agências
+paths:
+  /v1/accounts:
+    get:
+      tags:
+      - accounts
+      description: Retorna todas as Contas
+      operationId: getV1Accounts
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: name
+        in: query
+        schema:
+          type: string
+      - name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - subaccount
+          - customer
+          - agency
+      - name: parent_id
+        in: query
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todas as Contas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /v1/accounts/{account_id}:
+    get:
+      tags:
+      - accounts
+      description: Retorna uma Conta
+      operationId: getV1AccountsAccountId
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna uma Conta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+    patch:
+      tags:
+      - accounts
+      description: Atualiza uma Conta
+      operationId: patchV1AccountsAccountId
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - cancelled
+                  - active
+                name:
+                  type: string
+                billing_name:
+                  type: string
+                billing_document:
+                  type: string
+                billing_address:
+                  type: string
+                billing_address_number:
+                  type: string
+                billing_address_details:
+                  type: string
+                billing_city:
+                  type: string
+                billing_zipcode:
+                  type: string
+                billing_state:
+                  type: string
+                billing_country:
+                  type: string
+                  enum:
+                  - TJ
+                  - JM
+                  - HT
+                  - ST
+                  - MS
+                  - AE
+                  - PK
+                  - NL
+                  - LU
+                  - BZ
+                  - IR
+                  - BO
+                  - UY
+                  - GH
+                  - SA
+                  - CI
+                  - MF
+                  - TF
+                  - AI
+                  - QA
+                  - SX
+                  - LY
+                  - BV
+                  - PG
+                  - KG
+                  - GQ
+                  - EH
+                  - NU
+                  - PR
+                  - GD
+                  - KR
+                  - HM
+                  - SM
+                  - SL
+                  - CD
+                  - MK
+                  - TR
+                  - DZ
+                  - GE
+                  - PS
+                  - BB
+                  - UA
+                  - GP
+                  - PF
+                  - NA
+                  - BW
+                  - SY
+                  - TG
+                  - DO
+                  - AQ
+                  - CH
+                  - MG
+                  - FO
+                  - VG
+                  - GI
+                  - BN
+                  - LA
+                  - IS
+                  - EE
+                  - UM
+                  - LT
+                  - RS
+                  - MR
+                  - AD
+                  - HU
+                  - TK
+                  - MY
+                  - AO
+                  - CV
+                  - NF
+                  - PA
+                  - GW
+                  - BE
+                  - PT
+                  - GB
+                  - IM
+                  - US
+                  - YE
+                  - HK
+                  - AZ
+                  - CC
+                  - ML
+                  - SK
+                  - VU
+                  - TL
+                  - HR
+                  - SR
+                  - MU
+                  - CZ
+                  - PM
+                  - LS
+                  - WS
+                  - KM
+                  - IT
+                  - BI
+                  - WF
+                  - GN
+                  - SG
+                  - CO
+                  - CN
+                  - AW
+                  - MA
+                  - FI
+                  - VA
+                  - ZW
+                  - KY
+                  - BH
+                  - PY
+                  - EC
+                  - LR
+                  - RU
+                  - PL
+                  - OM
+                  - MT
+                  - SS
+                  - DE
+                  - TM
+                  - SJ
+                  - MM
+                  - TT
+                  - IL
+                  - BD
+                  - NR
+                  - LK
+                  - UG
+                  - NG
+                  - BQ
+                  - MX
+                  - CW
+                  - SI
+                  - MN
+                  - CA
+                  - AX
+                  - VN
+                  - TW
+                  - JP
+                  - IO
+                  - RO
+                  - BG
+                  - GU
+                  - BR
+                  - AM
+                  - ZM
+                  - DJ
+                  - JE
+                  - AT
+                  - CM
+                  - SE
+                  - FJ
+                  - KZ
+                  - GL
+                  - GY
+                  - CX
+                  - MW
+                  - TN
+                  - ZA
+                  - TO
+                  - CY
+                  - MV
+                  - PN
+                  - RW
+                  - NI
+                  - KN
+                  - BJ
+                  - ET
+                  - GM
+                  - TZ
+                  - VC
+                  - FK
+                  - SD
+                  - MC
+                  - AU
+                  - CL
+                  - DK
+                  - FR
+                  - TC
+                  - CU
+                  - AL
+                  - MZ
+                  - BS
+                  - NE
+                  - GT
+                  - LI
+                  - NP
+                  - BF
+                  - PW
+                  - KW
+                  - IN
+                  - GA
+                  - TV
+                  - MO
+                  - SH
+                  - MD
+                  - CK
+                  - AR
+                  - SC
+                  - IE
+                  - ES
+                  - LB
+                  - BM
+                  - RE
+                  - KI
+                  - AG
+                  - MQ
+                  - SV
+                  - JO
+                  - TH
+                  - SO
+                  - MH
+                  - CG
+                  - KP
+                  - GF
+                  - BA
+                  - YT
+                  - GS
+                  - KE
+                  - PE
+                  - BT
+                  - SZ
+                  - CR
+                  - TD
+                  - DM
+                  - NC
+                  - GR
+                  - GG
+                  - HN
+                  - VI
+                  - CF
+                  - SN
+                  - AF
+                  - MP
+                  - PH
+                  - BY
+                  - LV
+                  - NO
+                  - EG
+                  - KH
+                  - IQ
+                  - LC
+                  - NZ
+                  - BL
+                  - UZ
+                  - ID
+                  - ER
+                  - VE
+                  - FM
+                  - SB
+                  - ME
+                  - AS
+      responses:
+        200:
+          description: Atualiza uma Conta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /v1/accounts/{account_id}/users:
+    get:
+      tags:
+      - users
+      description: Retorna os Usuários de uma Conta
+      operationId: getV1AccountsAccountIdUsers
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Usuários de uma Conta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /v1/accounts/{account_id}/users/{user_id}:
+    get:
+      tags:
+      - users
+      description: Retorna um Usuário
+      operationId: getV1AccountsAccountIdUsersUserId
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna um Usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      tags:
+      - users
+      description: Remove um Usuário da Conta
+      operationId: deleteV1AccountsAccountIdUsersUserId
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+  /v1/accounts/{account_id}/custom-fields:
+    get:
+      tags:
+      - custom fields
+      description: Retorna todos os Campos Personalizados
+      operationId: getV1AccountsAccountIdCustomFields
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os Campos Personalizados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomField'
+    post:
+      tags:
+      - custom fields
+      description: Cria um novo Campo Personalizado
+      operationId: postV1AccountsAccountIdCustomFields
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - label
+              properties:
+                label:
+                  type: string
+                  description: Nome do campo personalizado.
+                tag:
+                  type: string
+                  description: Tag de personalização que estará disponível no HTML.
+                type:
+                  type: string
+                  description: Tipo de dado que será armazenado.
+                  enum:
+                  - text
+                  - date
+                  - number
+                  - options-single
+                  - options-multiple
+                options:
+                  type: array
+                  description: Valores permitidos para o Campo Personalizado do tipo
+                    `options`.
+                  items:
+                    type: string
+        required: true
+      responses:
+        201:
+          description: Cria um novo Campo Personalizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+  /v1/accounts/{account_id}/custom-fields/{tag}:
+    get:
+      tags:
+      - custom fields
+      description: Retorna um Campo Personalizado
+      operationId: getV1AccountsAccountIdCustomFieldsTag
+      parameters:
+      - name: tag
+        in: path
+        description: Tag de personalização do Campo Personalizado.
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna um Campo Personalizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+    delete:
+      tags:
+      - custom fields
+      description: Remove um Campo Personalizado
+      operationId: deleteV1AccountsAccountIdCustomFieldsTag
+      parameters:
+      - name: tag
+        in: path
+        description: Tag de personalização do Campo Personalizado.
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+    patch:
+      tags:
+      - custom fields
+      description: Atualiza um Campo Personalizado
+      operationId: patchV1AccountsAccountIdCustomFieldsTag
+      parameters:
+      - name: tag
+        in: path
+        description: Tag de personalização do Campo Personalizado.
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                label:
+                  type: string
+                  description: Nome do campo personalizado.
+                options:
+                  type: array
+                  description: Valores permitidos para o campo personalizado do tipo
+                    `options`.
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Atualiza um Campo Personalizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+  /v1/accounts/{account_id}/contacts/export:
+    post:
+      tags:
+      - contacts
+      description: Exporta os contatos e envia um link para download por email
+      operationId: postV1AccountsAccountIdContactsExport
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                status:
+                  type: string
+                  description: Filtro por status
+                  default: all
+                  enum:
+                  - all
+                  - active
+                  - unsubscribed
+                  - complained
+                  - deleted
+                  - bounced
+                email:
+                  type: string
+                  description: Endereço de email que receberá o link para download
+        required: true
+      responses:
+        202:
+          description: Accepted
+          content: {}
+  /v1/accounts/{account_id}/contacts:
+    get:
+      tags:
+      - contacts
+      description: Retorna os Contatos
+      operationId: getV1AccountsAccountIdContacts
+      parameters:
+      - name: status
+        in: query
+        description: Filtro por status
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Filtro parcial por email
+        schema:
+          type: string
+      - name: list_ids
+        in: query
+        description: Filtro por lista(s)
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+          enum:
+          - created_at
+          - email
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+          enum:
+          - asc
+          - desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+
+      responses:
+        200:
+          description: Retorna os Contatos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+    post:
+      tags:
+      - contacts
+      description: Cria um Contato
+      operationId: postV1AccountsAccountIdContacts
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                list_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                origin:
+                  type: string
+                  enum:
+                  - import
+                origin_id:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Cria um Contato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/contacts/{contact_id}/events:
+    get:
+      tags:
+      - contacts
+      description: Retorna os eventos (aberturas, cliques, envios, reportes por spam,
+        descadastros e bounces) de um Contato
+      operationId: getV1AccountsAccountIdContactsContactIdEvents
+      parameters:
+      - name: contact_id
+        in: path
+        description: Contact ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: query
+        description: Filtro por campanha
+        schema:
+          type: integer
+          format: int32
+      - name: event
+        in: query
+        description: Filtro por evento
+        schema:
+          type: string
+          enum:
+          - open
+          - click
+          - send
+          - complaint
+          - unsubscription
+          - bounce
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os eventos (aberturas, cliques, envios, reportes por
+            spam, descadastros e bounces) de um Contato
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /v1/accounts/{account_id}/contacts/{contact_id}/campaigns:
+    get:
+      tags:
+      - contacts
+      description: Retorna todas as Campanhs recebidas por um Contato
+      operationId: getV1AccountsAccountIdContactsContactIdCampaigns
+      parameters:
+      - name: contact_id
+        in: path
+        description: Contact ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todas as Campanhs recebidas por um Contato
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+  /v1/accounts/{account_id}/contacts/{contact_id}:
+    get:
+      tags:
+      - contacts
+      description: Retorna um Contato
+      operationId: getV1AccountsAccountIdContactsContactId
+      parameters:
+      - name: contact_id
+        in: path
+        description: Contact ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna um Contato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+    delete:
+      tags:
+      - contacts
+      description: Remvoe um Contato
+      operationId: deleteV1AccountsAccountIdContactsContactId
+      parameters:
+      - name: contact_id
+        in: path
+        description: Contact ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+    patch:
+      tags:
+      - contacts
+      description: Atualiza um Contato
+      operationId: patchV1AccountsAccountIdContactsContactId
+      parameters:
+      - name: contact_id
+        in: path
+        description: Contact ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: Endereço de email
+                list_ids:
+                  type: array
+                  description: Listas em que o contato está cadastrado
+                  items:
+                    type: integer
+                    format: int32
+                status:
+                  type: string
+                  description: Status
+                  enum:
+                  - all
+                  - active
+                  - unsubscribed
+                  - complained
+                  - deleted
+                  - bounced
+      responses:
+        200:
+          description: Atualiza um Contato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/contacts/{contact_id}/notes:
+    get:
+      tags:
+      - contact notes
+      description: Retorna as Observações de um Contato
+      operationId: getV1AccountsAccountIdContactsContactIdNotes
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: updated_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: user_id
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna as Observações de um Contato
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactNote'
+    post:
+      tags:
+      - contact notes
+      description: Cria uma Observação sobre um Contato
+      operationId: postV1AccountsAccountIdContactsContactIdNotes
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - note
+              properties:
+                note:
+                  type: string
+                  description: Observação
+        required: true
+      responses:
+        201:
+          description: Cria uma Observação sobre um Contato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactNote'
+  /v1/accounts/{account_id}/contacts/{contact_id}/notes/{note_id}:
+    get:
+      tags:
+      - contact notes
+      description: Retorna uma Observação sobre um Contato
+      operationId: getV1AccountsAccountIdContactsContactIdNotesNoteId
+      parameters:
+      - name: note_id
+        in: path
+        description: Contact Note ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna uma Observação sobre um Contato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactNote'
+    delete:
+      tags:
+      - contact notes
+      description: Remove uma Observação sobre um Contato
+      operationId: deleteV1AccountsAccountIdContactsContactIdNotesNoteId
+      parameters:
+      - name: note_id
+        in: path
+        description: Contact Note ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+    patch:
+      tags:
+      - contact notes
+      description: Atualiza uma Observação sobre um Contato
+      operationId: patchV1AccountsAccountIdContactsContactIdNotesNoteId
+      parameters:
+      - name: note_id
+        in: path
+        description: Contact Note ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - note
+              properties:
+                note:
+                  type: string
+                  description: Observação
+        required: true
+      responses:
+        200:
+          description: Atualiza uma Observação sobre um Contato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactNote'
+  /v1/accounts/{account_id}/contact-imports:
+    get:
+      tags:
+      - accounts
+      operationId: getV1AccountsAccountIdContactImports
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: get ContactImport(s)
+          content: {}
+    post:
+      tags:
+      - accounts
+      operationId: postV1AccountsAccountIdContactImports
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - filename
+              - source
+              properties:
+                source:
+                  type: string
+                filename:
+                  type: string
+                list_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                contact_status:
+                  type: string
+                  enum:
+                  - active
+                  - unsubscribed
+        required: true
+      responses:
+        201:
+          description: created ContactImport
+          content: {}
+  /v1/accounts/{account_id}/contact-imports/{import_id}:
+    get:
+      tags:
+      - accounts
+      operationId: getV1AccountsAccountIdContactImportsImportId
+      parameters:
+      - name: import_id
+        in: path
+        description: List import ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: get ContactImport(s)
+          content: {}
+    delete:
+      tags:
+      - accounts
+      operationId: deleteV1AccountsAccountIdContactImportsImportId
+      parameters:
+      - name: import_id
+        in: path
+        description: List import ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: deleted ContactImport
+          content: {}
+    patch:
+      tags:
+      - accounts
+      operationId: patchV1AccountsAccountIdContactImportsImportId
+      parameters:
+      - name: import_id
+        in: path
+        description: List import ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                fieldmap:
+                  type: array
+                  items:
+                    type: string
+                list_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                contact_status:
+                  type: string
+                  enum:
+                  - active
+                  - unsubscribed
+      responses:
+        200:
+          description: patched ContactImport
+          content: {}
+  /v1/accounts/{account_id}/contact-imports/{import_id}/failures:
+    get:
+      tags:
+      - accounts
+      operationId: getV1AccountsAccountIdContactImportsImportIdFailures
+      parameters:
+      - name: import_id
+        in: path
+        description: List import ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: status
+        in: query
+        schema:
+          type: string
+          default: pending
+          enum:
+          - pending
+          - fixed
+          - ignored
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: get Failure(s)
+          content: {}
+  /v1/accounts/{account_id}/contact-imports/{import_id}/failures/{failure_id}:
+    patch:
+      tags:
+      - accounts
+      operationId: patchV1AccountsAccountIdContactImportsImportIdFailuresFailureId
+      parameters:
+      - name: import_id
+        in: path
+        description: List import ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: failure_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - fixed
+                  - ignored
+        required: true
+      responses:
+        200:
+          description: patched Failure
+          content: {}
+  /v1/accounts/{account_id}/lists:
+    get:
+      tags:
+      - lists
+      description: Retorna todas as Listas
+      operationId: getV1AccountsAccountIdLists
+      parameters:
+      - name: name
+        in: query
+        description: Filtro por nome
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todas as Listas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/List'
+    post:
+      tags:
+      - lists
+      description: Cria uma Lista
+      operationId: postV1AccountsAccountIdLists
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: List name.
+                description:
+                  type: string
+                  description: List description.
+        required: true
+      responses:
+        201:
+          description: Cria uma Lista
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+  /v1/accounts/{account_id}/lists/{list_id}/export:
+    post:
+      tags:
+      - lists
+      description: Exporta os Contatos de uma Lista e envia um link para download
+        por email
+      operationId: postV1AccountsAccountIdListsListIdExport
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                status:
+                  type: string
+                  default: all
+                  enum:
+                  - all
+                  - active
+                  - unsubscribed
+                  - complained
+                  - deleted
+                  - bounced
+                email:
+                  type: string
+        required: true
+      responses:
+        202:
+          description: Accepted
+          content: {}
+  /v1/accounts/{account_id}/lists/{list_id}/contacts:
+    get:
+      tags:
+      - lists
+      description: Retorna os Contatos de uma Lista
+      operationId: getV1AccountsAccountIdListsListIdContacts
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Contatos de uma Lista
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+    post:
+      tags:
+      - lists
+      description: Adiciona um Contato a uma Lista
+      operationId: postV1AccountsAccountIdListsListIdContacts
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Adiciona um Contato a uma Lista
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/lists/{list_id}:
+    get:
+      tags:
+      - lists
+      description: Retorna uma Lista
+      operationId: getV1AccountsAccountIdListsListId
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna uma Lista
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+    delete:
+      tags:
+      - lists
+      description: Remove uma Lista
+      operationId: deleteV1AccountsAccountIdListsListId
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Remove uma Lista
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+    patch:
+      tags:
+      - lists
+      description: Atualiza uma Lista
+      operationId: patchV1AccountsAccountIdListsListId
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: List name.
+                description:
+                  type: string
+                  description: List description.
+      responses:
+        200:
+          description: Atualiza uma Lista
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+  /v1/accounts/{account_id}/lists/{list_id}/emailclients/contacts:
+    get:
+      tags:
+      - lists
+      description: Retorna os Contatos da Lista que usaram determinado programa de
+        email
+      operationId: getV1AccountsAccountIdListsListIdEmailclientsContacts
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: email
+          enum:
+          - email
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: asc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Contatos da Lista que usaram determinado programa
+            de email
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/lists/{list_id}/emailclients:
+    get:
+      tags:
+      - lists
+      description: Retorna as estatísticas de programas de email de uma Lista
+      operationId: getV1AccountsAccountIdListsListIdEmailclients
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna as estatísticas de programas de email de uma Lista
+          content: {}
+  /v1/accounts/{account_id}/lists/{list_id}/countries:
+    get:
+      tags:
+      - lists
+      description: Retorna as estatísticas de geolocalização de uma Lista (países)
+      operationId: getV1AccountsAccountIdListsListIdCountries
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna as estatísticas de geolocalização de uma Lista (países)
+          content: {}
+  /v1/accounts/{account_id}/lists/{list_id}/countries/{country}/contacts:
+    get:
+      tags:
+      - lists
+      description: Retorna os Contatos de uma Lista que abriram uma campanha em determinado
+        país e/ou cidade
+      operationId: getV1AccountsAccountIdListsListIdCountriesCountryContacts
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: country
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: city
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Contatos de uma Lista que abriram uma campanha em
+            determinado país e/ou cidade
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/lists/{list_id}/countries/{country}/cities:
+    get:
+      tags:
+      - lists
+      description: Retorna as estatísticas de geolocalização de uma Lista (cidades
+        de um país)
+      operationId: getV1AccountsAccountIdListsListIdCountriesCountryCities
+      parameters:
+      - name: list_id
+        in: path
+        description: List ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: country
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna as estatísticas de geolocalização de uma Lista (cidades
+            de um país)
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing:
+    get:
+      tags:
+      - campaigns
+      description: Retorna as Campanhas
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketing
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: scheduled_to,created_at,sent_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: query
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna as Campanhas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+    post:
+      tags:
+      - campaigns
+      description: Creates a Campaign
+      operationId: postV1AccountsAccountIdCampaignsEmailmarketing
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                recipients:
+                  type: string
+                  enum:
+                  - all
+                  - lists
+                  - campaign_activity
+                list_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                from_name:
+                  type: string
+                from_email:
+                  type: string
+                reply_to:
+                  type: string
+                name:
+                  type: string
+                subject:
+                  type: string
+                preheader:
+                  type: string
+                text:
+                  type: string
+                html:
+                  type: string
+                track_opens:
+                  type: boolean
+                  default: true
+                track_clicks:
+                  type: boolean
+                  default: true
+                track_google_analytics:
+                  type: boolean
+                attachment:
+                  type: string
+                recipients_campaign_activity:
+                  type: string
+                  enum:
+                  - delivered
+                  - opened
+                  - unopened
+                  - clicked
+                  - unclicked
+                recipients_campaign_activity_id:
+                  type: integer
+                  format: int32
+                recipients_campaign_activity_url:
+                  type: string
+      responses:
+        201:
+          description: Creates a Campaign
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/send:
+    post:
+      tags:
+      - campaigns
+      description: Envia uma Campanha
+      operationId: postV1AccountsAccountIdCampaignsEmailmarketingCampaignIdSend
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        201:
+          description: Envia uma Campanha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/test:
+    post:
+      tags:
+      - campaigns
+      description: Envia um teste de uma Campanha
+      operationId: postV1AccountsAccountIdCampaignsEmailmarketingCampaignIdTest
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - emails
+              properties:
+                emails:
+                  type: array
+                  items:
+                    type: string
+                render_as_contact_id:
+                  type: integer
+                  format: int32
+        required: true
+      responses:
+        204:
+          description: No Content
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}:
+    get:
+      tags:
+      - campaigns
+      description: Retorna uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignId
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna uma Campanha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+    delete:
+      tags:
+      - campaigns
+      description: Remove uma Campanha
+      operationId: deleteV1AccountsAccountIdCampaignsEmailmarketingCampaignId
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+    patch:
+      tags:
+      - campaigns
+      description: Atualiza uma Campanha
+      operationId: patchV1AccountsAccountIdCampaignsEmailmarketingCampaignId
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                recipients:
+                  type: string
+                  enum:
+                  - all
+                  - lists
+                  - campaign_activity
+                list_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                from_name:
+                  type: string
+                from_email:
+                  type: string
+                reply_to:
+                  type: string
+                name:
+                  type: string
+                subject:
+                  type: string
+                preheader:
+                  type: string
+                text:
+                  type: string
+                html:
+                  type: string
+                track_opens:
+                  type: boolean
+                track_clicks:
+                  type: boolean
+                track_google_analytics:
+                  type: boolean
+                attachment:
+                  type: string
+                status:
+                  type: string
+                recipients_campaign_activity:
+                  type: string
+                  enum:
+                  - delivered
+                  - opened
+                  - unopened
+                  - clicked
+                  - unclicked
+                recipients_campaign_activity_id:
+                  type: integer
+                  format: int32
+                recipients_campaign_activity_url:
+                  type: string
+      responses:
+        200:
+          description: Atualiza uma Campanha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/firstday:
+    get:
+      tags:
+      - accounts
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsFirstday
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: get Firstday(s)
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/opens:
+    get:
+      tags:
+      - reports
+      description: Retorna o total de aberturas por intervalo de tempo
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsOpens
+      parameters:
+      - name: by
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - minute
+          - hour
+          - day
+          - month
+          - year
+      - name: from
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: to
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna o total de aberturas por intervalo de tempo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Open'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/export:
+    post:
+      tags:
+      - reports
+      description: Envia um Resumo da Campanha por email
+      operationId: postV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsExport
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Created
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/clicks/contacts:
+    get:
+      tags:
+      - reports
+      description: Retorna os Contatos que clicaram em um determinado link
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsClicksContacts
+      parameters:
+      - name: url
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Contatos que clicaram em um determinado link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/clicks/links:
+    get:
+      tags:
+      - reports
+      description: Retorna o total de cliques em cada link
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsClicksLinks
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna o total de cliques em cada link
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/clicks:
+    get:
+      tags:
+      - reports
+      description: Retorna o total de cliques por intervalo de tempo
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsClicks
+      parameters:
+      - name: by
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - minute
+          - hour
+          - day
+          - month
+          - year
+      - name: from
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: to
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna o total de cliques por intervalo de tempo
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/events/bounces:
+    get:
+      tags:
+      - reports
+      description: Retorna os erros de entrega
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsEventsBounces
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: email
+          enum:
+          - email
+          - type
+          - reason
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: asc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os erros de entrega
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bounce'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/events/opens/export:
+    post:
+      tags:
+      - events
+      description: Exporta todas as aberturas de uma Campanha e envia por email um
+        link para download
+      operationId: postV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsEventsOpensExport
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        201:
+          description: Exporta todas as aberturas de uma Campanha e envia por email
+            um link para download
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/events/opens:
+    get:
+      tags:
+      - events
+      description: Retorna todas as aberturas de uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsEventsOpens
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+          enum:
+          - created_at
+          - email
+          - contact_id
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: contact_id
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todas as aberturas de uma Campanha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Open'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/events/clicks/export:
+    post:
+      tags:
+      - events
+      description: Exporta todos os cliques de uma Campanha e envia por email um link
+        para download
+      operationId: postV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsEventsClicksExport
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        201:
+          description: Exporta todos os cliques de uma Campanha e envia por email
+            um link para download
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/events/clicks:
+    get:
+      tags:
+      - events
+      description: Retorna todos os cliques de uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsEventsClicks
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+          enum:
+          - created_at
+          - email
+          - contact_id
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: contact_id
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os cliques de uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/complained:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários que reportaram uma Campanha como
+        spam
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityComplained
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: complained_at
+          enum:
+          - email
+          - complained_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários que reportaram uma Campanha
+            como spam
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/unsubscribed:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários que se descadastraram de uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityUnsubscribed
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: unsubscribed_at
+          enum:
+          - email
+          - unsubscribed_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários que se descadastraram de uma
+            Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/unclicked:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários que abriram mas não clicaram em
+        nenhum link de uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityUnclicked
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: opens
+          enum:
+          - email
+          - opens
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários que abriram mas não clicaram
+            em nenhum link de uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/clicked:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários que clicaram em ao menos um link
+        de uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityClicked
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: opens
+          enum:
+          - email
+          - opens
+          - clicks
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários que clicaram em ao menos um
+            link de uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/unopened:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários que não abriram uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityUnopened
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: email
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: asc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários que não abriram uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/opened:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários que abriram uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityOpened
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: opens
+          enum:
+          - email
+          - opens
+          - clicks
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários que abriram uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/delivered:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários que receberam uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityDelivered
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: opens
+          enum:
+          - email
+          - opens
+          - clicks
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários que receberam uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/all:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os destinatários de uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityAll
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: opens
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os destinatários de uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/activity/export:
+    post:
+      tags:
+      - reports
+      description: Exporta o Relatório de Atividade e envia por email um link para
+        download
+      operationId: postV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsActivityExport
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                page:
+                  type: integer
+                  format: int32
+                  default: 1
+                page_size:
+                  type: integer
+                  format: int32
+                  default: 20
+                email:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Exporta o Relatório de Atividade e envia por email um link
+            para download
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/countries:
+    get:
+      tags:
+      - reports
+      description: Retorna o total de aberturas por país de uma Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsCountries
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna o total de aberturas por país de uma Campanha
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/countries/{country}/contacts:
+    get:
+      tags:
+      - reports
+      description: Retorna todos os Contatos que abriram a Campanha em um determinado
+        país ou cidade
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsCountriesCountryContacts
+      parameters:
+      - name: country
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: email
+          enum:
+          - email
+          - opens
+          - clicks
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: asc
+      - name: city
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna todos os Contatos que abriram a Campanha em um determinado
+            país ou cidade
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/countries/{country}/cities:
+    get:
+      tags:
+      - reports
+      description: Retorna o total de aberturas por cidade de um país
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsCountriesCountryCities
+      parameters:
+      - name: country
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna o total de aberturas por cidade de um país
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/emailclients/contacts:
+    get:
+      tags:
+      - accounts
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsEmailclientsContacts
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: email
+          enum:
+          - email
+          - opens
+          - clicks
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: asc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: get Contact(s)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/reports/emailclients:
+    get:
+      tags:
+      - accounts
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdReportsEmailclients
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: get Emailclient(s)
+          content: {}
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/recipients:
+    get:
+      tags:
+      - campaigns
+      description: Retorna os Contatos definidos como destinatários da Campanha
+      operationId: getV1AccountsAccountIdCampaignsEmailmarketingCampaignIdRecipients
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Contatos definidos como destinatários da Campanha
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+  /v1/accounts/{account_id}/campaigns/emailmarketing/{campaign_id}/schedule:
+    put:
+      tags:
+      - campaigns
+      description: Agenda o envio de uma Campanha
+      operationId: putV1AccountsAccountIdCampaignsEmailmarketingCampaignIdSchedule
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - scheduled_to
+              properties:
+                scheduled_to:
+                  type: string
+                  format: date-time
+        required: true
+      responses:
+        200:
+          description: Agenda o envio de uma Campanha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+    delete:
+      tags:
+      - campaigns
+      description: Remove o agendamento do envio de uma Campanha
+      operationId: deleteV1AccountsAccountIdCampaignsEmailmarketingCampaignIdSchedule
+      parameters:
+      - name: campaign_id
+        in: path
+        description: Campaign ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+  /v1/accounts/{account_id}/templates:
+    get:
+      tags:
+      - templates
+      description: Retorna os Templates
+      operationId: getV1AccountsAccountIdTemplates
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+    post:
+      tags:
+      - templates
+      description: Cria um Template
+      operationId: postV1AccountsAccountIdTemplates
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - html
+              - name
+              properties:
+                name:
+                  type: string
+                html:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Cria um Template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+  /v1/accounts/{account_id}/templates/{template_id}:
+    get:
+      tags:
+      - templates
+      description: Retorna um Template
+      operationId: getV1AccountsAccountIdTemplatesTemplateId
+      parameters:
+      - name: template_id
+        in: path
+        description: Template ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna um Template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    delete:
+      tags:
+      - templates
+      description: Remove um Template
+      operationId: deleteV1AccountsAccountIdTemplatesTemplateId
+      parameters:
+      - name: template_id
+        in: path
+        description: Template ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+    patch:
+      tags:
+      - templates
+      description: Atualiza um Template
+      operationId: patchV1AccountsAccountIdTemplatesTemplateId
+      parameters:
+      - name: template_id
+        in: path
+        description: Template ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                html:
+                  type: string
+      responses:
+        200:
+          description: Atualiza um Template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+  /v1/accounts/{account_id}/subscription:
+    get:
+      tags:
+      - billing
+      description: Retorna a Assinatura atual da Conta
+      operationId: getV1AccountsAccountIdSubscription
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna a Assinatura atual da Conta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+  /v1/accounts/{account_id}/subscription/periods:
+    get:
+      tags:
+      - billing
+      description: Retorna os Períodos da Assinatura atual
+      operationId: getV1AccountsAccountIdSubscriptionPeriods
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Períodos da Assinatura atual
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionPeriod'
+  /v1/accounts/{account_id}/subscription/periods/{period_id}/credits:
+    get:
+      tags:
+      - billing
+      description: Retorna o Histórico de Créditos de um Período de Cobrança
+      operationId: getV1AccountsAccountIdSubscriptionPeriodsPeriodIdCredits
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: period_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna o Histórico de Créditos de um Período de Cobrança
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionPeriodCredit'
+  /v1/accounts/{account_id}/subscription/periods/{period_id}:
+    get:
+      tags:
+      - billing
+      description: Retorna um Período de Cobrança
+      operationId: getV1AccountsAccountIdSubscriptionPeriodsPeriodId
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: period_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna um Período de Cobrança
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionPeriod'
+  /v1/accounts/{account_id}/senders:
+    get:
+      tags:
+      - authorized senders
+      description: Retorna os Remetentes Autorizados
+      operationId: getV1AccountsAccountIdSenders
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna os Remetentes Autorizados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthorizedSender'
+    post:
+      tags:
+      - authorized senders
+      description: Cria um Remetente Autorizado
+      operationId: postV1AccountsAccountIdSenders
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Cria um Remetente Autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizedSender'
+  /v1/accounts/{account_id}/senders/{sender_id}/verify:
+    post:
+      tags:
+      - authorized senders
+      description: Verifica as configurações de um Remetente Autorizado
+      operationId: postV1AccountsAccountIdSendersSenderIdVerify
+      parameters:
+      - name: sender_id
+        in: path
+        description: Sender ID or Domain Name.
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        201:
+          description: Verifica as configurações de um Remetente Autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizedSender'
+  /v1/accounts/{account_id}/senders/{sender_id}:
+    get:
+      tags:
+      - authorized senders
+      description: Retorna um Remetente Autorizado
+      operationId: getV1AccountsAccountIdSendersSenderId
+      parameters:
+      - name: sender_id
+        in: path
+        description: Sender ID or Domain Name.
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna um Remetente Autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizedSender'
+    delete:
+      tags:
+      - authorized senders
+      description: Remove um Remetente Autorizado
+      operationId: deleteV1AccountsAccountIdSendersSenderId
+      parameters:
+      - name: sender_id
+        in: path
+        description: Sender ID or Domain Name.
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+    patch:
+      tags:
+      - authorized senders
+      description: Atualiza o endereço de email responsável e reenvia a confirmação
+        de propriedade do Remetente Autorizado
+      operationId: patchV1AccountsAccountIdSendersSenderId
+      parameters:
+      - name: sender_id
+        in: path
+        description: Sender ID or Domain Name.
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: Atualiza o endereço de email responsável e reenvia a confirmação
+            de propriedade do Remetente Autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizedSender'
+  /v1/accounts/{account_id}/subaccounts:
+    get:
+      tags:
+      - subaccounts
+      description: Retorna as Subcontas
+      operationId: getV1AccountsAccountIdSubaccounts
+      parameters:
+      - name: name
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          default: created_at
+      - name: order
+        in: query
+        schema:
+          type: string
+          default: desc
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna as Subcontas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+    post:
+      tags:
+      - subaccounts
+      description: Cria uma Subconta
+      operationId: postV1AccountsAccountIdSubaccounts
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Cria uma Subconta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /v1/accounts/{account_id}/subaccounts/{subaccount_id}/credits:
+    post:
+      tags:
+      - subaccounts
+      description: Adiciona ou remove créditos para/de uma Subconta
+      operationId: postV1AccountsAccountIdSubaccountsSubaccountIdCredits
+      parameters:
+      - name: subaccount_id
+        in: path
+        description: Subaccount ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - credits
+              - description
+              properties:
+                credits:
+                  type: integer
+                  description: Credit amount.
+                  format: int32
+                description:
+                  type: string
+                  description: Credit description.
+        required: true
+      responses:
+        204:
+          description: No Content
+          content: {}
+  /v1/accounts/{account_id}/subaccounts/{subaccount_id}:
+    get:
+      tags:
+      - subaccounts
+      description: Retorna uma Subconta
+      operationId: getV1AccountsAccountIdSubaccountsSubaccountId
+      parameters:
+      - name: subaccount_id
+        in: path
+        description: Subaccount ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Retorna uma Subconta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+    delete:
+      tags:
+      - subaccounts
+      description: Remove uma Subconta
+      operationId: deleteV1AccountsAccountIdSubaccountsSubaccountId
+      parameters:
+      - name: subaccount_id
+        in: path
+        description: Subaccount ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: No Content
+          content: {}
+    patch:
+      tags:
+      - subaccounts
+      description: Atualiza uma Subconta
+      operationId: patchV1AccountsAccountIdSubaccountsSubaccountId
+      parameters:
+      - name: subaccount_id
+        in: path
+        description: Subaccount ID.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                billing_name:
+                  type: string
+                billing_document:
+                  type: string
+                billing_address:
+                  type: string
+                billing_address_number:
+                  type: string
+                billing_address_details:
+                  type: string
+                billing_city:
+                  type: string
+                billing_zipcode:
+                  type: string
+                billing_state:
+                  type: string
+                billing_country:
+                  type: string
+                  enum:
+                  - TJ
+                  - JM
+                  - HT
+                  - ST
+                  - MS
+                  - AE
+                  - PK
+                  - NL
+                  - LU
+                  - BZ
+                  - IR
+                  - BO
+                  - UY
+                  - GH
+                  - SA
+                  - CI
+                  - MF
+                  - TF
+                  - AI
+                  - QA
+                  - SX
+                  - LY
+                  - BV
+                  - PG
+                  - KG
+                  - GQ
+                  - EH
+                  - NU
+                  - PR
+                  - GD
+                  - KR
+                  - HM
+                  - SM
+                  - SL
+                  - CD
+                  - MK
+                  - TR
+                  - DZ
+                  - GE
+                  - PS
+                  - BB
+                  - UA
+                  - GP
+                  - PF
+                  - NA
+                  - BW
+                  - SY
+                  - TG
+                  - DO
+                  - AQ
+                  - CH
+                  - MG
+                  - FO
+                  - VG
+                  - GI
+                  - BN
+                  - LA
+                  - IS
+                  - EE
+                  - UM
+                  - LT
+                  - RS
+                  - MR
+                  - AD
+                  - HU
+                  - TK
+                  - MY
+                  - AO
+                  - CV
+                  - NF
+                  - PA
+                  - GW
+                  - BE
+                  - PT
+                  - GB
+                  - IM
+                  - US
+                  - YE
+                  - HK
+                  - AZ
+                  - CC
+                  - ML
+                  - SK
+                  - VU
+                  - TL
+                  - HR
+                  - SR
+                  - MU
+                  - CZ
+                  - PM
+                  - LS
+                  - WS
+                  - KM
+                  - IT
+                  - BI
+                  - WF
+                  - GN
+                  - SG
+                  - CO
+                  - CN
+                  - AW
+                  - MA
+                  - FI
+                  - VA
+                  - ZW
+                  - KY
+                  - BH
+                  - PY
+                  - EC
+                  - LR
+                  - RU
+                  - PL
+                  - OM
+                  - MT
+                  - SS
+                  - DE
+                  - TM
+                  - SJ
+                  - MM
+                  - TT
+                  - IL
+                  - BD
+                  - NR
+                  - LK
+                  - UG
+                  - NG
+                  - BQ
+                  - MX
+                  - CW
+                  - SI
+                  - MN
+                  - CA
+                  - AX
+                  - VN
+                  - TW
+                  - JP
+                  - IO
+                  - RO
+                  - BG
+                  - GU
+                  - BR
+                  - AM
+                  - ZM
+                  - DJ
+                  - JE
+                  - AT
+                  - CM
+                  - SE
+                  - FJ
+                  - KZ
+                  - GL
+                  - GY
+                  - CX
+                  - MW
+                  - TN
+                  - ZA
+                  - TO
+                  - CY
+                  - MV
+                  - PN
+                  - RW
+                  - NI
+                  - KN
+                  - BJ
+                  - ET
+                  - GM
+                  - TZ
+                  - VC
+                  - FK
+                  - SD
+                  - MC
+                  - AU
+                  - CL
+                  - DK
+                  - FR
+                  - TC
+                  - CU
+                  - AL
+                  - MZ
+                  - BS
+                  - NE
+                  - GT
+                  - LI
+                  - NP
+                  - BF
+                  - PW
+                  - KW
+                  - IN
+                  - GA
+                  - TV
+                  - MO
+                  - SH
+                  - MD
+                  - CK
+                  - AR
+                  - SC
+                  - IE
+                  - ES
+                  - LB
+                  - BM
+                  - RE
+                  - KI
+                  - AG
+                  - MQ
+                  - SV
+                  - JO
+                  - TH
+                  - SO
+                  - MH
+                  - CG
+                  - KP
+                  - GF
+                  - BA
+                  - YT
+                  - GS
+                  - KE
+                  - PE
+                  - BT
+                  - SZ
+                  - CR
+                  - TD
+                  - DM
+                  - NC
+                  - GR
+                  - GG
+                  - HN
+                  - VI
+                  - CF
+                  - SN
+                  - AF
+                  - MP
+                  - PH
+                  - BY
+                  - LV
+                  - NO
+                  - EG
+                  - KH
+                  - IQ
+                  - LC
+                  - NZ
+                  - BL
+                  - UZ
+                  - ID
+                  - ER
+                  - VE
+                  - FM
+                  - SB
+                  - ME
+                  - AS
+      responses:
+        200:
+          description: Atualiza uma Subconta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /v1/oauth/authorize:
+    post:
+      tags:
+      - oauth
+      description: OAuth 2.0 Authorization Endpoint
+      operationId: postV1OauthAuthorize
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                response_type:
+                  type: string
+                  description: Response type
+                client_id:
+                  type: string
+                  description: Client ID
+                redirect_uri:
+                  type: string
+                  description: Redirect URI
+                scope:
+                  type: string
+                  description: Authorization scopes
+                state:
+                  type: string
+                  description: State
+      responses:
+        201:
+          description: OAuth 2.0 Authorization Endpoint
+          content: {}
+  /v1/oauth/revoke:
+    post:
+      tags:
+      - oauth
+      description: OAuth 2.0 Token Revocation
+      operationId: postV1OauthRevoke
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - token
+              properties:
+                token:
+                  type: string
+                  description: The token that the client wants to get revoked
+                token_type_hint:
+                  type: string
+                  description: A hint about the type of the token submitted for revocation
+                  default: access_token
+                  enum:
+                  - access_token
+                  - refresh_token
+        required: true
+      responses:
+        201:
+          description: OAuth 2.0 Token Revocation
+          content: {}
+  /v1/oauth/token:
+    post:
+      tags:
+      - oauth
+      description: OAuth 2.0 Token Endpoint
+      operationId: postV1OauthToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                grant_type:
+                  type: string
+                  description: Grant type
+                client_id:
+                  type: string
+                  description: Client ID
+                client_secret:
+                  type: string
+                  description: Client secret
+                refresh_token:
+                  type: string
+                  description: Refresh Token
+      responses:
+        201:
+          description: OAuth 2.0 Token Endpoint
+          content: {}
+  /v1/users/me:
+    get:
+      tags:
+      - users
+      description: Retorna o Usuário atual
+      operationId: getV1UsersMe
+      responses:
+        200:
+          description: Retorna o Usuário atual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      tags:
+      - users
+      description: Atualiza um Usuário
+      operationId: patchV1UsersMe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Atualiza um Usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Bad Request
+          content: {}
+components:
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+  schemas:
+    ContactStatistics:
+      type: object
+      properties:
+        counts:
+          type: string
+        rates:
+          type: string
+    AuthorizedSender:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        domain:
+          type: string
+        spf_record:
+          type: string
+        tracking_prefix:
+          type: string
+        is_authorized:
+          type: string
+        is_dkim_valid:
+          type: string
+        is_spf_valid:
+          type: string
+        is_return_path_valid:
+          type: string
+        is_tracking_valid:
+          type: string
+        last_tested_at:
+          type: string
+        authorized_at:
+          type: string
+        updated_at:
+          type: string
+        created_at:
+          type: string
+      description: Atualiza o endereço de email responsável e reenvia a confirmação
+        de propriedade do Remetente Autorizado
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        billing_id:
+          type: string
+        public_id:
+          type: string
+        name:
+          type: string
+        users:
+          $ref: '#/components/schemas/User'
+        owner:
+          $ref: '#/components/schemas/User'
+        parent:
+          $ref: '#/components/schemas/ParentEntity'
+        billing_name:
+          type: string
+        billing_document:
+          type: string
+        billing_address:
+          type: string
+        billing_address_number:
+          type: string
+        billing_address_details:
+          type: string
+        billing_zipcode:
+          type: string
+        billing_city:
+          type: string
+        billing_state:
+          type: string
+        billing_country:
+          type: string
+        status:
+          type: string
+        timezone:
+          type: string
+        current_balance:
+          type: string
+        subscription:
+          $ref: '#/components/schemas/Subscription'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: Retorna uma Subconta
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        account_ids:
+          type: string
+        accounts:
+          $ref: '#/components/schemas/EmbeddedEntity'
+        is_active:
+          type: string
+        is_admin:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: Retorna o Usuário atual
+    ContactNote:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        note:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: Retorna uma Observação sobre um Contato
+    SubscriptionPeriodCredit:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+        description:
+          type: string
+        credits:
+          type: string
+        created_at:
+          type: string
+      description: Retorna o Histórico de Créditos de um Período de Cobrança
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        credits:
+          type: string
+        is_post_paid:
+          type: string
+        is_unlimited:
+          type: string
+        is_renewable:
+          type: string
+    EmbeddedEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        public_id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        timezone:
+          type: string
+        current_balance:
+          type: string
+        subscription:
+          $ref: '#/components/schemas/Subscription'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    SubscriptionPeriod:
+      type: object
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        start_at:
+          type: string
+        end_at:
+          type: string
+      description: Retorna um Período de Cobrança
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID do contato
+        lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/List'
+          description: Listas em que o contato está cadastrado
+        list_ids:
+          type: array
+          description: IDs das listas em que o contato está cadastrado
+          items:
+            type: integer
+            format: int32
+        email:
+          type: string
+          description: Endereço de email
+        custom_data:
+          type: object
+          properties: {}
+          description: Dados adicionais do contato
+        origin:
+          type: string
+          description: Origem do contato
+          enum:
+          - manual
+          - import
+        statistics:
+          $ref: '#/components/schemas/ContactStatistics'
+        status:
+          type: string
+          description: Origem do contato
+          enum:
+          - active
+          - unsubscribed
+          - complained
+          - bounced
+          - deleted
+        last_open:
+          $ref: '#/components/schemas/Open'
+        last_bounce:
+          $ref: '#/components/schemas/Bounce'
+        last_complaint:
+          $ref: '#/components/schemas/Complaint'
+        last_unsubscription:
+          $ref: '#/components/schemas/Unsubscription'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: Retorna os Contatos definidos como destinatários da Campanha
+    Open:
+      type: object
+      properties:
+        id:
+          type: string
+        campaign_id:
+          type: string
+        contact_id:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+        ip:
+          type: string
+        location:
+          type: string
+        emailclient:
+          type: string
+      description: Retorna todas as aberturas de uma Campanha
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        html:
+          type: string
+        thumbnail:
+          type: string
+        screenshot:
+          type: string
+        updated_at:
+          type: string
+        created_at:
+          type: string
+      description: Retorna um Template
+    Unsubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        campaign_id:
+          type: string
+        contact_id:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+        ip:
+          type: string
+        location:
+          type: string
+        emailclient:
+          type: string
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: string
+        recipients:
+          type: string
+        recipients_campaign_activity:
+          type: string
+        recipients_campaign_activity_id:
+          type: string
+        recipients_campaign_activity_url:
+          type: string
+        list_ids:
+          type: string
+        lists:
+          $ref: '#/components/schemas/EmbeddedEntity'
+        from_name:
+          type: string
+        from_email:
+          type: string
+        reply_to:
+          type: string
+        text:
+          type: string
+        html:
+          type: string
+        name:
+          type: string
+        subject:
+          type: string
+        preheader:
+          type: string
+        screenshot:
+          type: string
+        thumbnail:
+          type: string
+        preview:
+          type: string
+        track_opens:
+          type: string
+        track_clicks:
+          type: string
+        track_google_analytics:
+          type: string
+        total_recipients:
+          type: string
+        status:
+          type: string
+        statistics:
+          type: string
+        scheduled_to:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        scheduled_at:
+          type: string
+        sent_at:
+          type: string
+      description: Agenda o envio de uma Campanha
+    CustomField:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do campo personalizado
+          format: int32
+        label:
+          type: string
+          description: Nome do campo personalizado
+        tag:
+          type: string
+          description: Tag de personalização para o HTML
+        type:
+          type: string
+          description: Tipo do campo personalizado
+          enum:
+          - text
+          - date
+          - number
+          - options-single
+          - options-multiple
+        options:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: Retorna um Campo Personalizado
+    Event:
+      type: object
+      properties:
+        event_id:
+          type: string
+        campaign_id:
+          type: string
+        contact_id:
+          type: string
+        event:
+          type: string
+        email:
+          type: string
+        domain:
+          type: string
+        subject:
+          type: string
+        message_id:
+          type: string
+        ip:
+          type: string
+        url:
+          type: string
+        bounce_type:
+          type: string
+        bounce_reason:
+          type: string
+        bounce_code:
+          type: string
+        bounce_message:
+          type: string
+        emailclient:
+          type: string
+        location:
+          type: string
+        created_at:
+          type: string
+      description: Retorna os eventos (aberturas, cliques, envios, reportes por spam,
+        descadastros e bounces) de um Contato
+    Bounce:
+      type: object
+      properties:
+        id:
+          type: string
+        campaign_id:
+          type: string
+        contact_id:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+        type:
+          type: string
+        reason:
+          type: string
+        domain:
+          type: string
+        subject:
+          type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+        error_description:
+          type: string
+      description: Retorna os erros de entrega
+    Complaint:
+      type: object
+      properties:
+        id:
+          type: string
+        campaign_id:
+          type: string
+        contact_id:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+    List:
+      type: object
+      properties:
+        id: 
+          type: string
+        name:
+          type: string
+        totals:
+          type: string
+        description:
+          type: string
+        statistics:
+          type: string
+        updated_at:
+          type: string
+        created_at:
+          type: string
+      description: Retorna uma Lista
+    ParentEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        product:
+          $ref: '#/components/schemas/Product'
+        current_balance:
+          type: string
+        current_period:
+          $ref: '#/components/schemas/SubscriptionPeriod'
+        billing:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: Retorna a Assinatura atual da Conta

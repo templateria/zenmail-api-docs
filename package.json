@@ -1,0 +1,20 @@
+{
+  "name": "zenmail-api-docs",
+  "version": "1.0.0",
+  "description": "Documentação da API do Zenmail",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "zenmail",
+    "api",
+    "email",
+    "marketing"
+  ],
+  "author": "Pedro Padron",
+  "license": "MIT",
+  "dependencies": {
+    "swagger-ui-dist": "^3.22.1"
+  }
+}
