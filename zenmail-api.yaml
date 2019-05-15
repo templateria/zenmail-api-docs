@@ -1,6 +1,6 @@
 openapi: "3.0.0"
 servers:
-  - url: https://api.zenmail.marketing/v1
+  - url: https://api.zenmail.marketing
 info:
   title: "Zenmail API"
   description: Documentação completa da API de email marketing do Zenmail, criado pela Templateria. Para testar as chamadas à API, clique em `Authorize` e informe seu token de acesso.
