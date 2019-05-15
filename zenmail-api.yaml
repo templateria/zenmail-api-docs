@@ -5,6 +5,8 @@ info:
   title: "Zenmail API"
   description: Documentação completa da API de email marketing do Zenmail, criado pela Templateria. Para testar as chamadas à API, clique em `Authorize` e informe seu token de acesso.
   version: "1.0.0"
+security:
+  - BearerAuth: []
 externalDocs:
   description: "Mais informações sobre o Zenmail"
   url: "https://help.zenmail.marketing"
@@ -4594,7 +4596,7 @@ paths:
           content: {}
 components:
   securitySchemes:
-    token:
+    BearerAuth:
       type: http
       scheme: bearer
   schemas:
